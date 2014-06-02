@@ -1,0 +1,10 @@
+C:\Users\Jamir\Documents\Visual Studio 2012\Projects\GraphCache\GraphCache\bin\Debug\GraphCache.dll
+C:\Users\Jamir\Documents\Visual Studio 2012\Projects\GraphCache\GraphCache\bin\Debug\GraphCache.pdb
+C:\Users\Jamir\Documents\Visual Studio 2012\Projects\GraphCache\GraphCache\obj\Debug\GraphCache.csprojResolveAssemblyReference.cache
+C:\Users\Jamir\Documents\Visual Studio 2012\Projects\GraphCache\GraphCache\obj\Debug\GraphCache.dll
+C:\Users\Jamir\Documents\Visual Studio 2012\Projects\GraphCache\GraphCache\obj\Debug\GraphCache.pdb
+D:\Programacão\Projetos\GraphCache\Source\1.0.0.0\GraphCache\bin\Debug\GraphCache.dll
+D:\Programacão\Projetos\GraphCache\Source\1.0.0.0\GraphCache\bin\Debug\GraphCache.pdb
+D:\Programacão\Projetos\GraphCache\Source\1.0.0.0\GraphCache\obj\Debug\GraphCache.csprojResolveAssemblyReference.cache
+D:\Programacão\Projetos\GraphCache\Source\1.0.0.0\GraphCache\obj\Debug\GraphCache.dll
+D:\Programacão\Projetos\GraphCache\Source\1.0.0.0\GraphCache\obj\Debug\GraphCache.pdb
