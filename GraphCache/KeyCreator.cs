@@ -20,7 +20,7 @@ namespace GraphCache
 
         private string CreatePartialKey(object value)
         {
-            var type = value.GetType().GetTypeInfo();
+            var type = value.GetType();
             var keyExtractor = _configuration.GetKeyExtractor(type);
             var key = string.Empty;
 

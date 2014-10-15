@@ -42,7 +42,7 @@ namespace GraphCache
 
             _cache = objectCache;
             _conventionEnabled = convetionEnabled;
-            _convention = new DefaultConvention();
+            _convention = new ConvetionWrapper(new DefaultConvention());
             _configuredTypes = new Dictionary<Type, Func<object, string>>();
         }
 
@@ -57,7 +57,7 @@ namespace GraphCache
             Check.NotNull(convention, "convention");
 
             _cache = objectCache;
-            _convention = convention;
+            _convention = new ConvetionWrapper(convention);
             _conventionEnabled = true;
             _configuredTypes = new Dictionary<Type, Func<object, string>>();
         }
@@ -75,14 +75,6 @@ namespace GraphCache
 
         internal bool Contains(Type type)
         {
-            if (IsIEnumerable(type))
-            {
-                if (IsValidCollection(type))
-                    type = this.ExtractElementType(type);
-                else
-                    return false;
-            }
-
             return _configuredTypes.ContainsKey(type) || FitInConvention(type);
         }
 
@@ -98,30 +90,6 @@ namespace GraphCache
             _configuredTypes.Add(type, keyExtractor);
 
             return keyExtractor;
-        }
-
-        private bool IsIEnumerable(Type type)
-        {
-            return type.GetInterfaces().Any(i => i == typeof(IEnumerable));
-        }
-
-        private Type ExtractElementType(Type type)
-        {
-            Type elementType = null;
-
-            if (type.IsGenericType)
-                elementType = type.GetGenericArguments()[0];
-            else if (type.IsArray)
-                elementType = type.GetElementType();
-            else
-                throw new TypeNotExpectedException(type);
-
-            return elementType;
-        }
-
-        private bool IsValidCollection(Type type)
-        {
-            return type.GetInterfaces().Any(i => i == typeof(IList));
         }
 
         private Func<object, string> CreateKeyExtractor(Type type)

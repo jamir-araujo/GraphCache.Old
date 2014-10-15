@@ -7,39 +7,31 @@ namespace GraphCache
 {
     internal class ObjectInspector
     {
-        private readonly CacheConfiguration _configuration;
-
-        internal ObjectInspector(CacheConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         internal IEnumerable<Property> GetCacheableProperties(object value)
         {
             var cacheableProperties = new List<Property>();
 
-            var type = value.GetType().GetTypeInfo();
-            var properties = type.GetProperties().Where(IsConfigured);
+            var type = value.GetType();
+            var properties = type.GetProperties().Where(IsValidProperty);
 
             foreach (var property in properties)
             {
                 cacheableProperties.Add(new Property
                 {
                     Name = property.Name,
-                    Value = property.GetValue(value)
+                    Value = property.GetValue(value, null)
                 });
             }
 
             return cacheableProperties;
         }
 
-        private bool IsConfigured(PropertyInfo propertyInfo)
+        private bool IsValidProperty(PropertyInfo propertyInfo)
         {
-            var typeInfo = propertyInfo.PropertyType.GetTypeInfo();
-            var IsIEnumerable = typeInfo.ImplementedInterfaces.Contains(typeof(IEnumerable));
-            var notPrimitive = !typeInfo.IsPrimitive;
+            var notPrimitive = !propertyInfo.PropertyType.IsPrimitive;
             var notString = propertyInfo.PropertyType != typeof(string);
-            return (notString && notPrimitive && IsIEnumerable) || _configuration.Contains(propertyInfo.PropertyType);
+            var canReadAndWrite = propertyInfo.CanRead && propertyInfo.CanWrite;
+            return (notString && notPrimitive && canReadAndWrite);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GraphCache.Exception;
 using GraphCache.Test.DataClasses;
 using GraphCache.Test.Helpers;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,37 @@ namespace GraphCache.Test
             var key = keyExtractor(city);
 
             Assert.AreEqual(city.PopulationCount.ToString(), key);
+        }
+
+        [Test, ExpectedException(typeof(ConventionException))]
+        public void Contains_WhenConvetionThrowsException_OnVerifyFitInConvetion()
+        {
+            var convention = new Mock<IConvention>();
+            _config = new CacheConfiguration(new MemoryCache("CacheConfigurationTests"), convention.Object);
+            convention.Setup(p => p.FitInConvention(It.IsAny<Type>())).Throws(new System.Exception());
+
+            _config.Contains(typeof(City));
+        }
+
+        [Test, ExpectedException(typeof(ConventionException))]
+        public void GetKeyExtractor_WhenConventionTrowsException_OnVerifyFitInConvetion()
+        {
+            var convention = new Mock<IConvention>();
+            _config = new CacheConfiguration(new MemoryCache("CacheConfigurationTests"), convention.Object);
+            convention.Setup(p => p.FitInConvention(It.IsAny<Type>())).Throws(new System.Exception());
+
+            _config.GetKeyExtractor(typeof(City));
+        }
+
+        [Test, ExpectedException(typeof(ConventionException))]
+        public void GetKeyExtractor_WhenConventionTrowsException_OnCreatingKeyExtractor()
+        {
+            var convention = new Mock<IConvention>();
+            _config = new CacheConfiguration(new MemoryCache("CacheConfigurationTests"), convention.Object);
+            convention.Setup(p => p.FitInConvention(It.IsAny<Type>())).Returns(true);
+            convention.Setup(p => p.CreateKeyExtractor(It.IsAny<Type>())).Throws(new System.Exception());
+
+            _config.GetKeyExtractor(typeof(City));
         }
     }
 }

@@ -15,21 +15,40 @@ namespace GraphCache.Test
         public void Setup()
         {
             _config = new CacheConfiguration(new MemoryCache("ObjectInspectorTests"));
-            _objectInspector = new ObjectInspector(_config);
+            _objectInspector = new ObjectInspector();
         }
 
         [Test]
         public void GetCacheableProperties()
         {
-            var order = new Order();
-            order.Id = 1;
-            order.Person = new Person { Id = 1, Name = "Roberto" };
+            var parentObject = new Parent();
+            parentObject.Children = new Children { Name = "CanReadAndWrite" };
 
-            var cacheables = _objectInspector.GetCacheableProperties(order);
+            var cacheables = _objectInspector.GetCacheableProperties(parentObject);
 
             Assert.AreEqual(1, cacheables.Count());
-            Assert.AreSame(order.Person, cacheables.First().Value);
-            Assert.AreEqual("Person", cacheables.First().Name);
+            var property = cacheables.First();
+            Assert.AreEqual("Children", property.Name);
+            Assert.AreSame(parentObject.Children, property.Value);
+            Assert.IsFalse(cacheables.Any(p => p.Name.Equals("Name")));
+            Assert.IsFalse(cacheables.Any(p => p.Name.Equals("CanRead")));
+            Assert.IsFalse(cacheables.Any(p => p.Name.Equals("CanWrite")));
+        }
+
+        class Parent
+        {
+            private Children _canRead;
+            private Children _canWrite;
+
+            public Children Children { get; set; }
+            public string Name { get; set; }
+            public Children CanRead { get { return _canRead; } }
+            public Children CanWrite { set { _canWrite = value; } }
+        }
+
+        class Children
+        {
+            public string Name { get; set; }
         }
     }
 }

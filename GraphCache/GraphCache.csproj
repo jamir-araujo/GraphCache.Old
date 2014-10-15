@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GraphCache</RootNamespace>
     <AssemblyName>GraphCache</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
     </SccProjectName>
@@ -19,6 +19,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,12 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Convention\ConvetionWrapper.cs" />
     <Compile Include="Convention\DefaultConvention.cs" />
     <Compile Include="Exception\CacheException.cs" />
+    <Compile Include="Exception\ConventionException.cs" />
     <Compile Include="Exception\KeyExtractorMalformedException.cs" />
     <Compile Include="Exception\TypeNotConfiguredException.cs" />
     <Compile Include="Exception\TypeNotFitInConventionException.cs" />
-    <Compile Include="Exception\TypeNotExpectedException.cs" />
     <Compile Include="Helpers\Check.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="Property.cs" />

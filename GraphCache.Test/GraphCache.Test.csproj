@@ -67,11 +67,13 @@
     <Compile Include="DataClasses\Book.cs" />
     <Compile Include="DataClasses\City.cs" />
     <Compile Include="DataClasses\CollectionContainer.cs" />
-    <Compile Include="DataClasses\ContactList.cs" />
+    <Compile Include="DataClasses\Document.cs" />
     <Compile Include="DataClasses\Item.cs" />
     <Compile Include="DataClasses\Order.cs" />
     <Compile Include="DataClasses\Person.cs" />
     <Compile Include="DataClasses\Profile.cs" />
+    <Compile Include="DataClasses\Project.cs" />
+    <Compile Include="DataClasses\Task.cs" />
     <Compile Include="DataClasses\User.cs" />
     <Compile Include="DefaultConventionTests.cs" />
     <Compile Include="Helpers\CityConvention.cs" />

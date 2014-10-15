@@ -9,11 +9,6 @@ namespace GraphCache.Exception
 {
     internal abstract class CacheException : System.Exception
     {
-        public CacheException()
-            : base()
-        {
-        }
-
         public CacheException(string message)
             : base(message)
         {
@@ -21,11 +16,6 @@ namespace GraphCache.Exception
 
         public CacheException(string message, System.Exception exception) 
             : base(message, exception)
-        {
-        }
-
-        public CacheException(SerializationInfo serializationInfo, StreamingContext context) 
-            : base(serializationInfo, context)
         {
         }
     }

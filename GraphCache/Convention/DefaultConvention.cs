@@ -24,7 +24,7 @@ namespace GraphCache.Convention
 
         private Func<object, string> CreateKeyExtractor(PropertyInfo property)
         {
-            return obj => property.GetValue(obj).ToString();
+            return obj => property.GetValue(obj, null).ToString();
         }
     }
 }

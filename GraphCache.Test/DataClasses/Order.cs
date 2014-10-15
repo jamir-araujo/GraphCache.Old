@@ -10,5 +10,6 @@ namespace GraphCache.Test.DataClasses
     {
         public int Id { get; set; }
         public Person Person { get; set; }
+        public string Key { get; set; }
     }
 }
