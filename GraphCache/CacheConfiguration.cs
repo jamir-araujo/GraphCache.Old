@@ -1,12 +1,9 @@
-﻿using GraphCache.Convention;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Caching;
+using GraphCache.Convention;
 using GraphCache.Exception;
 using GraphCache.Helpers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Caching;
 
 namespace GraphCache
 {
@@ -69,7 +66,7 @@ namespace GraphCache
         /// <param name="keyExtractor">A function that returns a string that is unique for each object of the specified type.</param>
         public void ConfigureType<T>(Func<T, string> keyExtractor)
         {
-            var wrappedExtractor = this.WrapExtractor(keyExtractor);
+            var wrappedExtractor = WrapExtractor(keyExtractor);
             _configuredTypes.Add(typeof(T), wrappedExtractor);
         }
 
@@ -86,7 +83,7 @@ namespace GraphCache
             if (!_conventionEnabled)
                 throw new TypeNotMappedException(type);
 
-            var keyExtractor = this.CreateKeyExtractor(type);
+            var keyExtractor = CreateKeyExtractor(type);
             _configuredTypes.Add(type, keyExtractor);
 
             return keyExtractor;

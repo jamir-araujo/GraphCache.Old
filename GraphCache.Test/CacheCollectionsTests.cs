@@ -1,5 +1,4 @@
-﻿using GraphCache.Exception;
-using GraphCache.Test.DataClasses;
+﻿using GraphCache.Test.DataClasses;
 using NUnit.Framework;
 using System;
 using System.Collections;

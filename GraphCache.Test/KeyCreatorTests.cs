@@ -19,7 +19,7 @@ namespace GraphCache.Test
             _keyCreator = new KeyCreator(_config);
 
             var person = new Person { Id = 2, Name = "person" };
-            var key = this.CreateKey(person, person.Id.ToString());
+            var key = CreateKey(person, person.Id.ToString());
 
             var createdKey = _keyCreator.CreateKey(person);
 

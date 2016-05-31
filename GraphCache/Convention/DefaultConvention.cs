@@ -1,6 +1,6 @@
-﻿using GraphCache.Exception;
-using System;
+﻿using System;
 using System.Reflection;
+using GraphCache.Exception;
 
 namespace GraphCache.Convention
 {
@@ -13,7 +13,7 @@ namespace GraphCache.Convention
             if (property == null)
                 throw new TypeNotFitInConventionException(type);
 
-            return this.CreateKeyExtractor(property);
+            return CreateKeyExtractor(property);
         }
 
         public bool FitInConvention(Type type)

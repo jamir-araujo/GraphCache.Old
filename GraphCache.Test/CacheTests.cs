@@ -114,7 +114,7 @@ namespace GraphCache.Test
         }
 
         [Test, ExpectedException(typeof(ArgumentException))]
-        public void AddItem_WithDoration_WhenDurationIsLessThenZero()
+        public void AddItem_WithDuration_WhenDurationIsLessThenZero()
         {
             _cache.Add(new Person(), TimeSpan.FromMinutes(-1));
         }
@@ -308,7 +308,7 @@ namespace GraphCache.Test
         [Test]
         public void RemoveGraph_WithListOfNonConventionalObjectIterruption()
         {
-            var projetc = this.CreateProject();
+            var projetc = CreateProject();
             _cache.Add(projetc, TimeSpan.FromMinutes(10));
 
             _cache.RemoveGraph<Project>(p => p.Id == projetc.Id);
@@ -593,7 +593,7 @@ namespace GraphCache.Test
         [Test]
         public void AddGraph_WithListOfNonConventionalObjectIterruption()
         {
-            var projetc = this.CreateProject();
+            var projetc = CreateProject();
 
             _cache.Add(projetc, TimeSpan.FromMinutes(10));
 
@@ -608,7 +608,7 @@ namespace GraphCache.Test
         [Test]
         public void GetGraph_WithListOfNonConventionalObjectIterruption()
         {
-            var projetc = this.CreateProject();
+            var projetc = CreateProject();
 
             _cache.Add(projetc, TimeSpan.FromMinutes(10));
             _cache.Remove<Person>(p => p.Id == projetc.Documents[1].Uploader.Id);

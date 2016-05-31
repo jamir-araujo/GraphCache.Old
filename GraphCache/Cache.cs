@@ -1,9 +1,9 @@
-﻿using GraphCache.Helpers;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
+using GraphCache.Helpers;
 
 namespace GraphCache
 {
@@ -12,7 +12,7 @@ namespace GraphCache
         private readonly CacheConfiguration _configuration;
         private readonly ObjectCache _cache;
         private readonly KeyCreator _keyCreator;
-        private readonly ObjectInspector _objectInspector;
+        private readonly IObjectInspector _objectInspector;
 
         private IEnumerable<object> _items
         {
@@ -45,8 +45,8 @@ namespace GraphCache
             if (duration <= default(TimeSpan))
                 throw new ArgumentException("duration must be greater than 0 seconds");
 
-            var expiration = this.GetExpirationTime(duration);
-            this.AddInternal(value, expiration);
+            var expiration = GetExpirationTime(duration);
+            AddInternal(value, expiration);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace GraphCache
             if (expirationTime <= DateTime.Now)
                 throw new ArgumentException("expirationTime must be greater than current DateTime.now");
 
-            this.AddInternal(value, expirationTime);
+            AddInternal(value, expirationTime);
         }
 
         /// <summary>
@@ -77,8 +77,7 @@ namespace GraphCache
             if (value == null)
                 return value;
 
-            var key = this.CreateKey(value);
-            value = (T)this.Get(key, new Dictionary<string, object>());
+            _objectInspector.LoadObject(value, LoadObject);
 
             return value;
         }
@@ -92,7 +91,10 @@ namespace GraphCache
         public IEnumerable<T> GetAll<T>(Func<T, bool> predicate)
         {
             var values = _items.OfType<T>().Where(predicate).ToList();
-            return this.LoadList(values);
+
+            _objectInspector.LoadObject(values, LoadObject);
+
+            return values;
         }
 
         /// <summary>
@@ -103,7 +105,10 @@ namespace GraphCache
         public IEnumerable<T> GetAll<T>()
         {
             var values = _items.OfType<T>().ToList();
-            return this.LoadList(values);
+
+            _objectInspector.LoadObject(values, LoadObject);
+
+            return values;
         }
 
         /// <summary>
@@ -129,7 +134,7 @@ namespace GraphCache
             if (item == null)
                 return;
 
-            var key = this.CreateKey(item);
+            var key = CreateKey(item);
             _cache.Remove(key);
         }
 
@@ -141,7 +146,7 @@ namespace GraphCache
         public void RemoveAll<T>(Func<T, bool> predicate)
         {
             var items = _items.OfType<T>().Where(predicate);
-            this.RemoveItems(items);
+            RemoveItems(items);
         }
 
         /// <summary>
@@ -151,7 +156,7 @@ namespace GraphCache
         public void RemoveAll<T>()
         {
             var items = _items.OfType<T>();
-            this.RemoveItems(items);
+            RemoveItems(items);
         }
 
         /// <summary>
@@ -163,7 +168,7 @@ namespace GraphCache
         {
             var item = _items.OfType<T>().FirstOrDefault(predicate);
             if (item != null)
-                this.RemoveGraphItem(item, new Dictionary<string, object>());
+                _objectInspector.InspectObject(item, RemoveCacheItem);
         }
 
         /// <summary>
@@ -173,9 +178,7 @@ namespace GraphCache
         public void RemoveAllGraphs<T>()
         {
             var items = _items.OfType<T>();
-            var removingItems = new Dictionary<string, object>();
-            foreach (var item in items)
-                this.RemoveGraphItem(item, removingItems);
+            _objectInspector.InspectObject(items, RemoveCacheItem);
         }
 
         /// <summary>
@@ -186,9 +189,7 @@ namespace GraphCache
         public void RemoveAllGraphs<T>(Func<T, bool> predicate)
         {
             var items = _items.OfType<T>().Where(predicate);
-            var removingItems = new Dictionary<string, object>();
-            foreach (var item in items)
-                this.RemoveGraphItem(item, removingItems);
+            _objectInspector.InspectObject(items, RemoveCacheItem);
         }
 
         /// <summary>
@@ -203,128 +204,36 @@ namespace GraphCache
 
         private void AddInternal(object value, DateTimeOffset expiration)
         {
-            if (IsIEnumerable(value))
-                this.AddCollection(value, expiration);
-            else
-                this.AddObject(value, expiration);
+            _objectInspector.InspectObject(value, cacheItem => AddObject(cacheItem, expiration));
         }
 
-        private object Get(string key, IDictionary<string, object> loadingObjects)
+        private void AddObject(object value, DateTimeOffset expiration)
         {
-            if (loadingObjects.ContainsKey(key))
-                return loadingObjects[key];
+            if (IsValidType(value))
+            {
+                var key = CreateKey(value);
+                _cache.Add(key, value, expiration);
+            }
+        }
 
-            var value = _cache.Get(key);
-            if (value == null)
-                return value;
-
-            loadingObjects.Add(key, value);
-
-            this.LoadObjectProperties(value, loadingObjects);
+        private object LoadObject(object value)
+        {
+            if (IsValidType(value))
+            {
+                var key = CreateKey(value);
+                value = _cache.Get(key);
+            }
 
             return value;
         }
 
-        private void LoadObjectProperties(object value, IDictionary<string, object> loadingObjects)
+        private void RemoveCacheItem(object value)
         {
-            var cacheableProperties = _objectInspector.GetCacheableProperties(value);
-            var type = value.GetType();
-            foreach (var cacheableProperty in cacheableProperties)
-                this.LoadProperty(cacheableProperty, value, type, loadingObjects);
-        }
-
-        private void LoadProperty(Property property, object ownerValue, Type ownerType, IDictionary<string, object> loadingObjects)
-        {
-            if (property.Value == null)
-                return;
-
-            if (IsIEnumerable(property.Value))
-                this.LoadIEnumerableProperty(property, loadingObjects);
-            else
-            {
-                if (IsValidType(property.Value))
-                {
-                    var key = this.CreateKey(property.Value);
-                    var newValue = this.Get(key, loadingObjects);
-
-                    if (newValue == null)
-                        return;
-
-                    var propertyInfo = ownerType.GetProperty(property.Name);
-                    propertyInfo.SetValue(ownerValue, newValue, null);
-                }
-                else
-                    LoadObjectProperties(property.Value, loadingObjects);
-            }
-        }
-
-        private void LoadIEnumerableProperty(Property property, IDictionary<string, object> loadingObjects)
-        {
-            var list = property.Value as IList;
-            if (list == null)
-                return;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i] == null)
-                    continue;
-
-                if (IsValidType(list[i]))
-                {
-                    var key = this.CreateKey(list[i]);
-                    var newValue = this.Get(key, loadingObjects);
-                    if (newValue != null)
-                        list[i] = newValue;
-                }
-                else
-                    LoadObjectProperties(list[i], loadingObjects);
-            }
-        }
-
-        private List<T> LoadList<T>(List<T> values)
-        {
-            if (!values.Any())
-                return values;
-
-            var loadingObjects = new Dictionary<string, object>();
-
-            for (int i = 0; i < values.Count; i++)
-            {
-                var key = this.CreateKey(values[i]);
-                values[i] = (T)this.Get(key, loadingObjects);
-            }
-
-            return values;
-        }
-
-        private bool IsIEnumerable(object value)
-        {
-            return value is IEnumerable;
-        }
-
-        private void AddCollection(object value, DateTimeOffset expiration)
-        {
-            var values = value as IEnumerable;
-            foreach (var item in values)
-                this.AddInternal(item, expiration);
-        }
-
-        private void AddObject(object value, DateTimeOffset expireation)
-        {
-            if (value == null)
-                return;
-
             if (IsValidType(value))
             {
-                var key = this.CreateKey(value);
-
-                if (_cache.Contains(key))
-                    return;
-
-                _cache.Add(key, value, expireation);
-            }            
-
-            this.AddObjectProperties(value, expireation);
+                var key = CreateKey(value);
+                _cache.Remove(key);
+            }
         }
 
         private bool IsValidType(object value)
@@ -332,53 +241,12 @@ namespace GraphCache
             return _configuration.Contains(value.GetType());
         }
 
-        private void AddObjectProperties(object value, DateTimeOffset expireation)
-        {
-            var cacheableProperties = _objectInspector.GetCacheableProperties(value);
-            foreach (var property in cacheableProperties)
-                this.AddInternal(property.Value, expireation);
-        }
-
         private void RemoveItems<T>(IEnumerable<T> items)
         {
             foreach (var item in items)
             {
-                var key = this.CreateKey(item);
+                var key = CreateKey(item);
                 _cache.Remove(key);
-            }
-        }
-        
-        private void RemoveGraphItem(object item, IDictionary<string, object> removingItems)
-        {
-            if (item == null)
-                return;
-
-            if (IsValidType(item))
-            {
-                var key = _keyCreator.CreateKey(item);
-                if (removingItems.ContainsKey(key))
-                    return;
-
-                _cache.Remove(key);
-                removingItems.Add(key, item);
-            }
-
-            this.RemoveItemProperties(item, removingItems);
-        }
-
-        private void RemoveItemProperties(object item, IDictionary<string, object> removingItems)
-        {
-            var cacheableProperties = _objectInspector.GetCacheableProperties(item);
-            foreach (var property in cacheableProperties)
-            {
-                if (this.IsIEnumerable(property.Value))
-                {
-                    var collection = property.Value as IEnumerable;
-                    foreach (var collectionItem in collection)
-                        this.RemoveGraphItem(collectionItem, removingItems);
-                }
-                else
-                    this.RemoveGraphItem(property.Value, removingItems);
             }
         }
 
@@ -389,7 +257,7 @@ namespace GraphCache
 
         private DateTimeOffset GetExpirationTime(TimeSpan duration)
         {
-            return DateTime.Now + duration;
+            return DateTimeOffset.Now.Add(duration);
         }
     }
 }

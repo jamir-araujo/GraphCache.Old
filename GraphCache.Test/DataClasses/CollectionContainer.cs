@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace GraphCache.Test.DataClasses
+﻿namespace GraphCache.Test.DataClasses
 {
     public class CollectionContainer<T>
     {

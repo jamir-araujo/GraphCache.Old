@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace GraphCache.Test.DataClasses
+﻿namespace GraphCache.Test.DataClasses
 {
     public class Item
     {

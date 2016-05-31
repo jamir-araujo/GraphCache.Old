@@ -4,7 +4,6 @@ using GraphCache.Test.Helpers;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Runtime.Caching;
 
 namespace GraphCache.Test

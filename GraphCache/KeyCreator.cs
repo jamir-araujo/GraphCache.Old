@@ -1,6 +1,5 @@
 ﻿using GraphCache.Exception;
 using System;
-using System.Reflection;
 
 namespace GraphCache
 {
@@ -38,8 +37,8 @@ namespace GraphCache
 
         internal string CreateKey(object value)
         {
-            var partialkey = this.CreatePartialKey(value);
-            return this.CreateKey(partialkey, value.GetType());
+            var partialkey = CreatePartialKey(value);
+            return CreateKey(partialkey, value.GetType());
         }
     }
 }
