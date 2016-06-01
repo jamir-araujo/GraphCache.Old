@@ -49,7 +49,7 @@ namespace GraphCache
             }
         }
 
-        private IEnumerable<Property> GetCacheableProperties(object value)
+        private IEnumerable<PropertyAssessor> GetCacheableProperties(object value)
         {
             var type = value.GetType();
             return type.GetProperties().Where(IsValidProperty).Select(ConvertToProperty);
@@ -139,9 +139,9 @@ namespace GraphCache
             return true;
         }
 
-        private Property ConvertToProperty(PropertyInfo propertyInfo)
+        private PropertyAssessor ConvertToProperty(PropertyInfo propertyInfo)
         {
-            return PropertyFactory.GetProperty(propertyInfo);
+            return PropertyAssessorFactory.GetProperty(propertyInfo);
         }
 
         private bool IsIList(object value)
@@ -154,34 +154,34 @@ namespace GraphCache
             return value is IEnumerable;
         }
 
-        internal class PropertyFactory
+        internal class PropertyAssessorFactory
         {
             private static MethodInfo _getPropertyGenericMethod;
 
-            static PropertyFactory()
+            static PropertyAssessorFactory()
             {
-                _getPropertyGenericMethod = typeof(PropertyFactory).GetMethod(nameof(GetGenericProperty), BindingFlags.NonPublic | BindingFlags.Static);
+                _getPropertyGenericMethod = typeof(PropertyAssessorFactory).GetMethod(nameof(GetGenericProperty), BindingFlags.NonPublic | BindingFlags.Static);
             }
 
-            public static Property GetProperty(PropertyInfo propertyInfo)
+            public static PropertyAssessor GetProperty(PropertyInfo propertyInfo)
             {
-                if (PropertyCache.HasProperty(propertyInfo))
-                    return PropertyCache.Get(propertyInfo);
+                if (PropertyAssessorCache.HasProperty(propertyInfo))
+                    return PropertyAssessorCache.Get(propertyInfo);
 
                 var genericMethod = _getPropertyGenericMethod.MakeGenericMethod(propertyInfo.DeclaringType, propertyInfo.PropertyType);
-                var property = (Property)genericMethod.Invoke(null, new[] { propertyInfo });
+                var assessor = (PropertyAssessor)genericMethod.Invoke(null, new[] { propertyInfo });
 
-                PropertyCache.Add(property);
+                PropertyAssessorCache.Add(assessor);
 
-                return property;
+                return assessor;
             }
 
-            private static Property<TOwner, TProperty> GetGenericProperty<TOwner, TProperty>(PropertyInfo propertyInfo)
+            private static PropertyAssessor<TOwner, TProperty> GetGenericProperty<TOwner, TProperty>(PropertyInfo propertyInfo)
             {
                 var getter = new Lazy<Getter<TOwner, TProperty>>(() => CreateGetter<TOwner, TProperty>(propertyInfo));
                 var setter = new Lazy<Setter<TOwner, TProperty>>(() => CreateSetter<TOwner, TProperty>(propertyInfo));
 
-                return new Property<TOwner, TProperty>(propertyInfo, getter, setter);
+                return new PropertyAssessor<TOwner, TProperty>(propertyInfo, getter, setter);
             }
 
             private static Setter<TOwner, TProperty> CreateSetter<TOwner, TProperty>(PropertyInfo propertyInfo)
@@ -197,12 +197,12 @@ namespace GraphCache
             }
         }
 
-        public class Property<TOwner, TProperty> : Property
+        public class PropertyAssessor<TOwner, TProperty> : PropertyAssessor
         {
             private Lazy<Getter<TOwner, TProperty>> _getter;
             private Lazy<Setter<TOwner, TProperty>> _setter;
 
-            public Property(
+            public PropertyAssessor(
                 PropertyInfo propertyInfo,
                 Lazy<Getter<TOwner, TProperty>> getter,
                 Lazy<Setter<TOwner, TProperty>> setter)
@@ -217,11 +217,11 @@ namespace GraphCache
             public override void Set(object owner, object value) => _setter.Value((TOwner)owner, (TProperty)value);
         }
 
-        public abstract class Property
+        public abstract class PropertyAssessor
         {
             public PropertyInfo PropertyInfo { get; private set; }
 
-            public Property(PropertyInfo propertyInfo)
+            public PropertyAssessor(PropertyInfo propertyInfo)
             {
                 PropertyInfo = propertyInfo;
             }
@@ -233,11 +233,11 @@ namespace GraphCache
         public delegate TProperty Getter<TOwner, TProperty>(TOwner owner);
         public delegate void Setter<TOwner, TProperty>(TOwner owner, TProperty value);
 
-        internal static class PropertyCache
+        internal static class PropertyAssessorCache
         {
             private static string KEY_FORMAT = "{0}.{1}";
 
-            private static ConcurrentDictionary<string, Property> _cache = new ConcurrentDictionary<string, Property>();
+            private static ConcurrentDictionary<string, PropertyAssessor> _cache = new ConcurrentDictionary<string, PropertyAssessor>();
 
             public static bool HasProperty(PropertyInfo key)
             {
@@ -245,13 +245,13 @@ namespace GraphCache
                 return _cache.ContainsKey(stringKey);
             }
 
-            public static Property Get(PropertyInfo key)
+            public static PropertyAssessor Get(PropertyInfo key)
             {
                 var stringKey = CreatePropertyKey(key);
                 return _cache[stringKey];
             }
 
-            public static void Add(Property item)
+            public static void Add(PropertyAssessor item)
             {
                 var stringKey = CreatePropertyKey(item.PropertyInfo);
                 _cache.TryAdd(stringKey, item);
