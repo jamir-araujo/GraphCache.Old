@@ -80,8 +80,6 @@
     <Compile Include="Helpers\MalformedConvention.cs" />
     <Compile Include="KeyCreatorTests.cs" />
     <Compile Include="ObjectInspectorDelegateTests.cs" />
-    <Compile Include="ObjectInspectorPerformanceComparasionTests.cs" />
-    <Compile Include="ObjectInspectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CacheTests.cs" />
     <Compile Include="PropertyCacheTests.cs" />

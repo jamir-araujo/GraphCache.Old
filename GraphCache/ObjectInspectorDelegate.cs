@@ -15,15 +15,15 @@ namespace GraphCache
             Check.NotNull(value, nameof(value));
             Check.NotNull(cacheItemFounded, nameof(cacheItemFounded));
 
-            InspectObject(value, cacheItemFounded, new List<object>());
+            InspectObject(value, cacheItemFounded, new HashSet<object>());
         }
 
         public void LoadObject(object value, Func<object, object> cacheItemGetter)
         {
             Check.NotNull(value, nameof(value));
             Check.NotNull(cacheItemGetter, nameof(cacheItemGetter));
-
-            LoadObject(value, cacheItemGetter, new List<object>());
+            
+            LoadObject(value, cacheItemGetter, new HashSet<object>());
         }
 
         private void InspectObject(object value, Action<object> cacheItemFounded, ICollection<object> workingObjects)

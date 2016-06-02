@@ -30,7 +30,7 @@ namespace GraphCache
             _configuration = configuration;
             _cache = configuration.Cache;
             _keyCreator = new KeyCreator(configuration);
-            _objectInspector = new ObjectInspector();
+            _objectInspector = new ObjectInspectorDelegate();
         }
 
         /// <summary>

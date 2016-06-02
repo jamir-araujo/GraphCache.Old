@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphCache.Test", "GraphCache.Test\GraphCache.Test.csproj", "{AFFA6524-5056-4C30-868F-CE79E9CC12BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphCache", "GraphCache\GraphCache.csproj", "{966CC818-4FE3-4AF3-976E-78DBEFF10F81}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphCache.Console", "GraphCache.Console\GraphCache.Console.csproj", "{969AB478-6DE3-4F17-9EB7-A70D1908E126}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{966CC818-4FE3-4AF3-976E-78DBEFF10F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{966CC818-4FE3-4AF3-976E-78DBEFF10F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{966CC818-4FE3-4AF3-976E-78DBEFF10F81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{969AB478-6DE3-4F17-9EB7-A70D1908E126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{969AB478-6DE3-4F17-9EB7-A70D1908E126}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{969AB478-6DE3-4F17-9EB7-A70D1908E126}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{969AB478-6DE3-4F17-9EB7-A70D1908E126}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
