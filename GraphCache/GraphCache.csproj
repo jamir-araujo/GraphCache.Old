@@ -59,7 +59,7 @@
     <Compile Include="Helpers\Check.cs" />
     <Compile Include="IConvention.cs" />
     <Compile Include="IObjectInspector.cs" />
-    <Compile Include="ObjectInspectorDelegate.cs" />
+    <Compile Include="ObjectInspector.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="CacheConfiguration.cs" />
     <Compile Include="KeyCreator.cs" />

@@ -7,14 +7,14 @@ using NUnit.Framework;
 namespace GraphCache.Test
 {
     [TestFixture]
-    public class ObjectInspectorDelegateTests
+    public class ObjectInspectorTests
     {
-        private ObjectInspectorDelegate _objectInspector;
+        private ObjectInspector _objectInspector;
 
         [SetUp]
         public void Initialize()
         {
-            _objectInspector = new ObjectInspectorDelegate();
+            _objectInspector = new ObjectInspector();
         }
 
         [Test, ExpectedException(typeof(ArgumentNullException))]

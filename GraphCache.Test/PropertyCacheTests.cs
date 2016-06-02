@@ -14,23 +14,23 @@ namespace GraphCache.Test
         public void HasProperty()
         {
             var propertyInfo = typeof(SimpleClass).GetProperty("Id");
-            var property = new ObjectInspectorDelegate.PropertyAssessor<SimpleClass, int>(propertyInfo, null, null);
-            ObjectInspectorDelegate.PropertyAssessorCache.Add(property);
+            var property = new ObjectInspector.PropertyAssessor<SimpleClass, int>(propertyInfo, null, null);
+            ObjectInspector.PropertyAssessorCache.Add(property);
 
-            Assert.IsTrue(ObjectInspectorDelegate.PropertyAssessorCache.HasProperty(propertyInfo));
+            Assert.IsTrue(ObjectInspector.PropertyAssessorCache.HasProperty(propertyInfo));
             
             var newPropertyInfo = typeof(SimpleClass).GetProperty("Id");
-            Assert.IsTrue(ObjectInspectorDelegate.PropertyAssessorCache.HasProperty(newPropertyInfo));
+            Assert.IsTrue(ObjectInspector.PropertyAssessorCache.HasProperty(newPropertyInfo));
         }
 
         [Test]
         public void Get()
         {
             var propertyInfo = typeof(SimpleClass).GetProperty("Id");
-            var property = new ObjectInspectorDelegate.PropertyAssessor<SimpleClass, int>(propertyInfo, null, null);
-            ObjectInspectorDelegate.PropertyAssessorCache.Add(property);
+            var property = new ObjectInspector.PropertyAssessor<SimpleClass, int>(propertyInfo, null, null);
+            ObjectInspector.PropertyAssessorCache.Add(property);
 
-            var cachedProperty = ObjectInspectorDelegate.PropertyAssessorCache.Get(propertyInfo);
+            var cachedProperty = ObjectInspector.PropertyAssessorCache.Get(propertyInfo);
             Assert.AreSame(property, cachedProperty);
         }
 

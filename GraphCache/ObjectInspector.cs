@@ -8,7 +8,7 @@ using GraphCache.Helpers;
 
 namespace GraphCache
 {
-    internal class ObjectInspectorDelegate : IObjectInspector
+    internal class ObjectInspector : IObjectInspector
     {
         public void InspectObject(object value, Action<object> cacheItemFounded)
         {
