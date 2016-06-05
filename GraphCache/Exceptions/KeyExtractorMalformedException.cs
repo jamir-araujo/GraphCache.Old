@@ -1,5 +1,5 @@
 ﻿
-namespace GraphCache.Exception
+namespace GraphCache.Exceptions
 {
     internal class KeyExtractorMalformedException : CacheException
     {

@@ -1,4 +1,4 @@
-﻿using GraphCache.Exception;
+﻿using GraphCache.Exceptions;
 using GraphCache.Test.DataClasses;
 using GraphCache.Test.Helpers;
 using Moq;
@@ -86,7 +86,7 @@ namespace GraphCache.Test
         [Test, ExpectedException(typeof(ConventionException))]
         public void Contains_WhenConvetionThrowsException_OnVerifyFitInConvetion()
         {
-            var convention = new Mock<IConvention>();
+            var convention = new Mock<Convention>();
             _config = new CacheConfiguration(new MemoryCache("CacheConfigurationTests"), convention.Object);
             convention.Setup(p => p.FitInConvention(It.IsAny<Type>())).Throws(new System.Exception());
 
@@ -96,7 +96,7 @@ namespace GraphCache.Test
         [Test, ExpectedException(typeof(ConventionException))]
         public void GetKeyExtractor_WhenConventionTrowsException_OnVerifyFitInConvetion()
         {
-            var convention = new Mock<IConvention>();
+            var convention = new Mock<Convention>();
             _config = new CacheConfiguration(new MemoryCache("CacheConfigurationTests"), convention.Object);
             convention.Setup(p => p.FitInConvention(It.IsAny<Type>())).Throws(new System.Exception());
 
@@ -106,7 +106,7 @@ namespace GraphCache.Test
         [Test, ExpectedException(typeof(ConventionException))]
         public void GetKeyExtractor_WhenConventionTrowsException_OnCreatingKeyExtractor()
         {
-            var convention = new Mock<IConvention>();
+            var convention = new Mock<Convention>();
             _config = new CacheConfiguration(new MemoryCache("CacheConfigurationTests"), convention.Object);
             convention.Setup(p => p.FitInConvention(It.IsAny<Type>())).Returns(true);
             convention.Setup(p => p.CreateKeyExtractor(It.IsAny<Type>())).Throws(new System.Exception());

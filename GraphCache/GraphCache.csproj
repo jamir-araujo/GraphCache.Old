@@ -49,22 +49,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Convention.cs" />
     <Compile Include="Convention\ConvetionWrapper.cs" />
     <Compile Include="Convention\DefaultConvention.cs" />
-    <Compile Include="Exception\CacheException.cs" />
-    <Compile Include="Exception\ConventionException.cs" />
-    <Compile Include="Exception\KeyExtractorMalformedException.cs" />
-    <Compile Include="Exception\TypeNotConfiguredException.cs" />
-    <Compile Include="Exception\TypeNotFitInConventionException.cs" />
+    <Compile Include="Exceptions\CacheException.cs" />
+    <Compile Include="Exceptions\ConventionException.cs" />
+    <Compile Include="Exceptions\KeyExtractorMalformedException.cs" />
+    <Compile Include="Exceptions\PropertyNotFoundException.cs" />
+    <Compile Include="Exceptions\TypeNotConfiguredException.cs" />
+    <Compile Include="Exceptions\TypeNotFitInConventionException.cs" />
     <Compile Include="Helpers\Check.cs" />
-    <Compile Include="IConvention.cs" />
     <Compile Include="IObjectInspector.cs" />
     <Compile Include="ObjectInspector.cs" />
-    <Compile Include="Property.cs" />
     <Compile Include="CacheConfiguration.cs" />
     <Compile Include="KeyCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="PropertyAssessor.cs" />
+    <Compile Include="PropertyAssessorCache.cs" />
+    <Compile Include="PropertyAssessorFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

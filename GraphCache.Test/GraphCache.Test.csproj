@@ -82,7 +82,7 @@
     <Compile Include="ObjectInspectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CacheTests.cs" />
-    <Compile Include="PropertyCacheTests.cs" />
+    <Compile Include="PropertyAssessorCacheTests.cs" />
     <Compile Include="ReflectionTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,17 +2,17 @@
 
 namespace GraphCache.Test.Helpers
 {
-    public class CityConvention : IConvention
+    public class CityConvention : Convention
     {
-        public Func<object, string> CreateKeyExtractor(Type type)
+        public override Func<object, string> CreateKeyExtractor(Type type)
         {
-            var property = type.GetProperty("PopulationCount");
-            return @object => property.GetValue(@object).ToString();
+            var getter = GetPropertyGetter(type, "PopulationCount");
+            return value => getter(value).ToString();
         }
 
-        public bool FitInConvention(Type type)
+        public override bool FitInConvention(Type type)
         {
-            return type.GetProperty("PopulationCount") != null;
+            return HasProperty(type, "PopulationCount");
         }
     }
 }

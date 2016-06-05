@@ -1,6 +1,8 @@
-﻿namespace GraphCache.Exception
+﻿using System;
+
+namespace GraphCache.Exceptions
 {
-    internal abstract class CacheException : System.Exception
+    internal abstract class CacheException : Exception
     {
         public CacheException(string message)
             : base(message)

@@ -1,30 +1,18 @@
 ﻿using System;
-using System.Reflection;
-using GraphCache.Exception;
 
-namespace GraphCache.Convention
+namespace GraphCache.Conventions
 {
-    internal class DefaultConvention : IConvention
+    internal class DefaultConvention : Convention
     {
-        public Func<object, string> CreateKeyExtractor(Type type)
+        public override Func<object, string> CreateKeyExtractor(Type type)
         {
-            var property = type.GetProperty("Id");
-
-            if (property == null)
-                throw new TypeNotFitInConventionException(type);
-
-            return CreateKeyExtractor(property);
+            var getter = GetPropertyGetter(type, "Id");
+            return value => getter(value).ToString();
         }
 
-        public bool FitInConvention(Type type)
+        public override bool FitInConvention(Type type)
         {
-            var property = type.GetProperty("Id");
-            return property != null;
-        }
-
-        private Func<object, string> CreateKeyExtractor(PropertyInfo property)
-        {
-            return obj => property.GetValue(obj, null).ToString();
+            return HasProperty(type, "Id");
         }
     }
 }

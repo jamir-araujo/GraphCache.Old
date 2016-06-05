@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
-using GraphCache.Convention;
+using GraphCache.Conventions;
 using GraphCache.Test.DataClasses;
-using GraphCache.Exception;
+using GraphCache.Exceptions;
 
 namespace GraphCache.Test
 {
@@ -27,7 +27,7 @@ namespace GraphCache.Test
             Assert.AreEqual(person.Id.ToString(), key);
         }
 
-        [Test, ExpectedException(typeof(TypeNotFitInConventionException))]
+        [Test, ExpectedException(typeof(PropertyNotFoundException))]
         public void CreateKeyExtractor_WhenTypeDoNotFitInConvention()
         {
             var keyExtractor = _convetion.CreateKeyExtractor(typeof(City));

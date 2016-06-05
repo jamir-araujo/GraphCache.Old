@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GraphCache.Exception
+namespace GraphCache.Exceptions
 {
     internal class TypeNotFitInConventionException : CacheException
     {

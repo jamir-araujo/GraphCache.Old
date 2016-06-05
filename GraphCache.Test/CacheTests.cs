@@ -593,9 +593,9 @@ namespace GraphCache.Test
         [Test]
         public void AddGraph_WithListOfNonConventionalObjectIterruption()
         {
-            var projetc = CreateProject();
+            var project = CreateProject();
 
-            _cache.Add(projetc, TimeSpan.FromMinutes(10));
+            _cache.Add(project, TimeSpan.FromMinutes(10));
 
             Assert.IsTrue(_cache.Contains<Project>(p => p.Id == 1));
             Assert.IsTrue(_cache.Contains<Order>(p => p.Id == 1));

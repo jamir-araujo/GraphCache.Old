@@ -1,4 +1,4 @@
-﻿using GraphCache.Exception;
+﻿using GraphCache.Exceptions;
 using System;
 
 namespace GraphCache

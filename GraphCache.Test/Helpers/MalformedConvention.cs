@@ -2,15 +2,15 @@
 
 namespace GraphCache.Test.Helpers
 {
-    public class MalformedConvention : IConvention
+    public class MalformedConvention : Convention
     {
-        public Func<object, string> CreateKeyExtractor(Type type)
+        public override Func<object, string> CreateKeyExtractor(Type type)
         {
-            var property = type.GetProperty("NotExistentProperty");
-            return value => property.GetValue(value).ToString();
+            var getter = GetPropertyGetter(type, "NotExistentProperty");
+            return value => getter(value).ToString();
         }
 
-        public bool FitInConvention(Type type)
+        public override bool FitInConvention(Type type)
         {
             return true;
         }

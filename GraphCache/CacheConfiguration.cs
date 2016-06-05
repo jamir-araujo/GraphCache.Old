@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Caching;
-using GraphCache.Convention;
-using GraphCache.Exception;
+using GraphCache.Conventions;
+using GraphCache.Exceptions;
 using GraphCache.Helpers;
 
 namespace GraphCache
@@ -11,7 +11,7 @@ namespace GraphCache
     {
         private readonly bool _conventionEnabled;
         private readonly ObjectCache _cache;
-        private readonly IConvention _convention;
+        private readonly Convention _convention;
         private readonly Dictionary<Type, Func<object, string>> _configuredTypes;
 
         internal ObjectCache Cache
@@ -48,7 +48,7 @@ namespace GraphCache
         /// </summary>
         /// <param name="objectCache">The internal ObjectCache that will store the values</param>
         /// <param name="convention">A custom convention that will create the keyExtractors</param>
-        public CacheConfiguration(ObjectCache objectCache, IConvention convention)
+        public CacheConfiguration(ObjectCache objectCache, Convention convention)
         {
             Check.NotNull(objectCache, "objectCachem");
             Check.NotNull(convention, "convention");

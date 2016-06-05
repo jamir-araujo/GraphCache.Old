@@ -1,4 +1,4 @@
-﻿using GraphCache.Exception;
+﻿using GraphCache.Exceptions;
 using GraphCache.Test.DataClasses;
 using GraphCache.Test.Helpers;
 using NUnit.Framework;
@@ -26,7 +26,7 @@ namespace GraphCache.Test
             Assert.AreEqual(key, createdKey);
         }
 
-        [Test, ExpectedException(typeof(KeyExtractorMalformedException))]
+        [Test, ExpectedException(typeof(ConventionException))]
         public void CreatePartialKey()
         {
             _config = new CacheConfiguration(new MemoryCache("KeyCreatorTests"), new MalformedConvention());

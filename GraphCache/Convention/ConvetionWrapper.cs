@@ -1,36 +1,36 @@
-﻿using GraphCache.Exception;
+﻿using GraphCache.Exceptions;
 using System;
 
-namespace GraphCache.Convention
+namespace GraphCache.Conventions
 {
-    internal class ConvetionWrapper : IConvention
+    internal class ConvetionWrapper : Convention
     {
-        private IConvention _convention;
+        private Convention _convention;
 
-        public ConvetionWrapper(IConvention convention)
+        public ConvetionWrapper(Convention convention)
         {
             _convention = convention;
         }
 
-        public Func<object, string> CreateKeyExtractor(Type type)
+        public override Func<object, string> CreateKeyExtractor(Type type)
         {
             try
             {
                 return _convention.CreateKeyExtractor(type);
             }
-            catch (System.Exception exception)
+            catch (Exception exception)
             {
                 throw new ConventionException(ConventionException.ErroType.CreateKeyExtractorError, exception);
             }
         }
 
-        public bool FitInConvention(Type type)
+        public override bool FitInConvention(Type type)
         {
             try
             {
                 return _convention.FitInConvention(type);
             }
-            catch (System.Exception exception)
+            catch (Exception exception)
             {
                 throw new ConventionException(ConventionException.ErroType.FitInConventionError, exception);
             }

@@ -1,7 +1,8 @@
-﻿
-namespace GraphCache.Exception
+﻿using System;
+
+namespace GraphCache.Exceptions
 {
-    internal class ConventionException : System.Exception
+    internal class ConventionException : CacheException
     {
         private readonly ErroType _type;
         private const string DEFAULT_MESSAGE = "An Exception was thrown on call the {0} method of the convention, see the InnerException for more details";
