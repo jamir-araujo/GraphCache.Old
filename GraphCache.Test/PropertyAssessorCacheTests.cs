@@ -134,15 +134,9 @@ namespace GraphCache.Test
                 new Lazy<Setter<SimpleClass, int>>(() => null));
         }
 
-        private string GetKey(PropertyInfo key)
-        {
-            return GetKey(key.DeclaringType, key.Name);
-        }
+        private string GetKey(PropertyInfo key) => GetKey(key.DeclaringType, key.Name);
 
-        private string GetKey(Type declaringType, string propertyName)
-        {
-            return string.Format("{0}.{1}", declaringType.FullName, propertyName);
-        }
+        private string GetKey(Type declaringType, string propertyName) => string.Format("{0}.{1}", declaringType.FullName, propertyName);
 
         class SimpleClass
         {

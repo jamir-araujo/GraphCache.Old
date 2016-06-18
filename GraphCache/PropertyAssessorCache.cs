@@ -79,10 +79,7 @@ namespace GraphCache
 
         public override int GetHashCode() => _hashcode;
 
-        public override string ToString()
-        {
-            return ToString(DeclaringType, PropertyName);
-        }
+        public override string ToString() => ToString(DeclaringType, PropertyName);
 
         private static string ToString(Type declaringType, string propertyName)
         {

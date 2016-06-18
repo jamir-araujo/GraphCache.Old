@@ -442,7 +442,7 @@ namespace GraphCache.Test
 
             public SimpleClass Child { get; set; }
             public string Name { get; set; }
-            public SimpleClass CanRead { get { return _canRead; } }
+            public SimpleClass CanRead => _canRead;
             public SimpleClass CanWrite { set { _canWrite = value; } }
         }
 

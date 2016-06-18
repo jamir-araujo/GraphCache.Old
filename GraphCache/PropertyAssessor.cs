@@ -28,7 +28,7 @@ namespace GraphCache
 
     internal abstract class PropertyAssessor
     {
-        public PropertyInfo PropertyInfo { get; private set; }
+        public PropertyInfo PropertyInfo { get; }
 
         public PropertyAssessor(PropertyInfo propertyInfo)
         {

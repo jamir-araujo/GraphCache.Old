@@ -10,9 +10,6 @@ namespace GraphCache.Conventions
             return value => getter(value).ToString();
         }
 
-        public override bool FitInConvention(Type type)
-        {
-            return HasProperty(type, "Id");
-        }
+        public override bool FitInConvention(Type type) => HasProperty(type, "Id");
     }
 }

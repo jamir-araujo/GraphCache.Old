@@ -143,14 +143,8 @@ namespace GraphCache
             return PropertyAssessorFactory.GetProperty(propertyInfo);
         }
 
-        private bool IsIList(object value)
-        {
-            return value is IList;
-        }
+        private bool IsIList(object value) => value is IList;
 
-        private bool IsIEnumerable(object value)
-        {
-            return value is IEnumerable;
-        }
+        private bool IsIEnumerable(object value) => value is IEnumerable;
     }
 }

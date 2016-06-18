@@ -13,10 +13,7 @@ namespace GraphCache
         private readonly KeyCreator _keyCreator;
         private readonly IObjectInspector _objectInspector;
 
-        private IEnumerable<object> _items
-        {
-            get { return _cache.Select(p => p.Value); }
-        }
+        private IEnumerable<object> _items => _cache.Select(p => p.Value);
 
         /// <summary>
         /// Initializes the cache with the provided configuration.
@@ -116,10 +113,7 @@ namespace GraphCache
         /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="predicate">A function to test each object for a condition.</param>
         /// <returns>Returns true if any object in the cache passes the test specified by predicate; otherwise returns false.</returns>
-        public bool Contains<T>(Func<T, bool> predicate)
-        {
-            return _items.OfType<T>().Any(predicate);
-        }
+        public bool Contains<T>(Func<T, bool> predicate) => _items.OfType<T>().Any(predicate);
 
         /// <summary>
         /// Removes the first object that satisfies the condition.
@@ -235,10 +229,7 @@ namespace GraphCache
             }
         }
 
-        private bool IsValidType(object value)
-        {
-            return _configuration.Contains(value.GetType());
-        }
+        private bool IsValidType(object value) => _configuration.Contains(value.GetType());
 
         private void RemoveItems<T>(IEnumerable<T> items)
         {
@@ -249,14 +240,8 @@ namespace GraphCache
             }
         }
 
-        private string CreateKey(object value)
-        {
-            return _keyCreator.CreateKey(value);
-        }
+        private string CreateKey(object value) => _keyCreator.CreateKey(value);
 
-        private DateTimeOffset GetExpirationTime(TimeSpan duration)
-        {
-            return DateTimeOffset.Now.Add(duration);
-        }
+        private DateTimeOffset GetExpirationTime(TimeSpan duration) => DateTimeOffset.Now.Add(duration);
     }
 }

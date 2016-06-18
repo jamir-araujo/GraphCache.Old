@@ -14,10 +14,7 @@ namespace GraphCache
         private readonly Convention _convention;
         private readonly Dictionary<Type, Func<object, string>> _configuredTypes;
 
-        internal ObjectCache Cache
-        {
-            get { return _cache; }
-        }
+        internal ObjectCache Cache => _cache;
 
         /// <summary>
         /// Initializes the configuration with the provided ObjectCache and the default convention enabled.
@@ -104,9 +101,6 @@ namespace GraphCache
             return false;
         }
 
-        private Func<object, string> WrapExtractor<T>(Func<T, string> keyExtractor)
-        {
-            return valeu => keyExtractor((T)valeu);
-        }
+        private Func<object, string> WrapExtractor<T>(Func<T, string> keyExtractor) => valeu => keyExtractor((T)valeu);
     }
 }

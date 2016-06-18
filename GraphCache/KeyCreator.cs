@@ -12,10 +12,7 @@ namespace GraphCache
             _configuration = configuration;
         }
 
-        private string CreateKey(string partialKey, Type type)
-        {
-            return string.Format("{0} = {1}", type.FullName, partialKey);
-        }
+        private string CreateKey(string partialKey, Type type) => string.Format("{0} = {1}", type.FullName, partialKey);
 
         private string CreatePartialKey(object value)
         {
