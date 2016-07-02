@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GraphCache.Exceptions
+﻿namespace GraphCache.Exceptions
 {
     internal class ConventionException : CacheException
     {
