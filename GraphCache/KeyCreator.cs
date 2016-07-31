@@ -5,6 +5,8 @@ namespace GraphCache
 {
     internal class KeyCreator
     {
+        private const string KEY_FORMAT = "{0} = {1}";
+
         private readonly CacheConfiguration _configuration;
 
         internal KeyCreator(CacheConfiguration configuration)
@@ -12,7 +14,7 @@ namespace GraphCache
             _configuration = configuration;
         }
 
-        private string CreateKey(string partialKey, Type type) => string.Format("{0} = {1}", type.FullName, partialKey);
+        private string CreateKey(string partialKey, Type type) => string.Format(KEY_FORMAT, type.FullName, partialKey);
 
         private string CreatePartialKey(object value)
         {

@@ -19,7 +19,7 @@ namespace GraphCache.Console
                         iterations = 100000;
                         break;
                     case "MEMORY":
-                        iterations = 2000;
+                        iterations = 5000;
                         break;
                     default:
                         break;
