@@ -12,9 +12,13 @@
             get
             {
                 if (_type == ErroType.CreateKeyExtractorError)
+                {
                     return CREATE_KEY_EXTRACTOR_ERROR_MESSAGE;
+                }
                 else
+                {
                     return FIT_IN_CONVENTION_ERROR_MESSAGE;
+                }
             }
         }
 

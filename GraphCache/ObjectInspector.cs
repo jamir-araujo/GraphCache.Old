@@ -28,7 +28,9 @@ namespace GraphCache
         private void InspectObject(object value, Action<object> cacheItemFounded, ICollection<object> workingObjects)
         {
             if (value == null || workingObjects.Contains(value))
+            {
                 return;
+            }
 
             workingObjects.Add(value);
 
@@ -57,13 +59,17 @@ namespace GraphCache
         private void InspectIEnumerable(IEnumerable collection, Action<object> cacheItemFounded, ICollection<object> workingObjects)
         {
             foreach (var value in collection)
+            {
                 InspectObject(value, cacheItemFounded, workingObjects);
+            }
         }
 
         private void LoadObject(object value, Func<object, object> cacheItemGetter, ICollection<object> workingObjects)
         {
             if (value == null || workingObjects.Contains(value))
+            {
                 return;
+            }
 
             workingObjects.Add(value);
 
@@ -77,7 +83,9 @@ namespace GraphCache
                 {
                     var propertyValeu = property.GetValue(value);
                     if (propertyValeu == null)
+                    {
                         continue;
+                    }
 
                     if (IsIList(propertyValeu))
                     {
@@ -103,7 +111,9 @@ namespace GraphCache
         private void LoadIEnumerable(IEnumerable collection, Func<object, object> cacheItemGetter, ICollection<object> workingObjects)
         {
             foreach (var value in collection)
+            {
                 LoadObject(value, cacheItemGetter, workingObjects);
+            }
         }
 
         private void LoadIList(object value, Func<object, object> cacheItemGetter, ICollection<object> workingObjects)
@@ -112,7 +122,9 @@ namespace GraphCache
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i] == null)
+                {
                     continue;
+                }
 
                 var newValue = cacheItemGetter(list[i]);
                 if (newValue != null)
@@ -127,13 +139,19 @@ namespace GraphCache
         private bool IsValidProperty(PropertyInfo propertyInfo)
         {
             if (propertyInfo.PropertyType.IsPrimitive)
+            {
                 return false;
+            }
 
             if (!propertyInfo.CanRead || !propertyInfo.CanWrite)
+            {
                 return false;
+            }
 
             if (propertyInfo.PropertyType == typeof(string))
+            {
                 return false;
+            }
 
             return true;
         }

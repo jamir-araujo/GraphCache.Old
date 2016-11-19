@@ -39,7 +39,9 @@ namespace GraphCache
             Check.NotNull(value, "value");
 
             if (duration <= default(TimeSpan))
+            {
                 throw new ArgumentException("duration must be greater than 0 seconds");
+            }
 
             var expiration = GetExpirationTime(duration);
             AddInternal(value, expiration);
@@ -55,7 +57,9 @@ namespace GraphCache
             Check.NotNull(value, "value");
 
             if (expirationTime <= DateTime.Now)
+            {
                 throw new ArgumentException("expirationTime must be greater than current DateTime.now");
+            }
 
             AddInternal(value, expirationTime);
         }
@@ -71,7 +75,9 @@ namespace GraphCache
             var value = _items.OfType<T>().FirstOrDefault(predicate);
 
             if (value == null)
+            {
                 return value;
+            }
 
             _objectInspector.LoadObject(value, LoadObject);
 
@@ -125,7 +131,9 @@ namespace GraphCache
             var item = _items.OfType<T>().FirstOrDefault(predicate);
 
             if (item == null)
+            {
                 return;
+            }
 
             var key = CreateKey(item);
             _cache.Remove(key);
@@ -161,7 +169,9 @@ namespace GraphCache
         {
             var item = _items.OfType<T>().FirstOrDefault(predicate);
             if (item != null)
+            {
                 _objectInspector.InspectObject(item, RemoveCacheItem);
+            }
         }
 
         /// <summary>
@@ -192,7 +202,9 @@ namespace GraphCache
         {
             var keys = _cache.Select(p => p.Key);
             foreach (var key in keys)
+            {
                 _cache.Remove(key);
+            }
         }
 
         private void AddInternal(object value, DateTimeOffset expiration)

@@ -75,10 +75,14 @@ namespace GraphCache
         internal Func<object, string> GetKeyExtractor(Type type)
         {
             if (_configuredTypes.ContainsKey(type))
+            {
                 return _configuredTypes[type];
+            }
 
             if (!_conventionEnabled)
+            {
                 throw new TypeNotMappedException(type);
+            }
 
             var keyExtractor = CreateKeyExtractor(type);
             _configuredTypes.Add(type, keyExtractor);
@@ -89,7 +93,9 @@ namespace GraphCache
         private Func<object, string> CreateKeyExtractor(Type type)
         {
             if (!FitInConvention(type))
+            {
                 throw new TypeNotFitInConventionException(type);
+            }
 
             return _convention.CreateKeyExtractor(type);
         }
@@ -97,7 +103,10 @@ namespace GraphCache
         private bool FitInConvention(Type type)
         {
             if (_conventionEnabled)
+            {
                 return _convention.FitInConvention(type);
+            }
+
             return false;
         }
 
